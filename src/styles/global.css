@@ -1,0 +1,221 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ========================= */
+/* THEME VARIABLES */
+/* ========================= */
+
+:root {
+  --bg: #ffffff;
+  --text: #0f172a;
+  --card: #f1f5f9;
+  --border: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  --bg: #020617;
+  --text: #e2e8f0;
+  --card: #1e293b;
+  --border: #334155;
+}
+
+/* ========================= */
+/* GLOBAL STYLES */
+/* ========================= */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s ease;
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* Grid */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.table th {
+  text-align: left;
+  padding-bottom: 10px;
+}
+
+.table td {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Colors */
+.income {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.expense {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+/* Buttons */
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #22c55e;
+  color: white;
+  transition: 0.3s;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Select */
+select {
+  padding: 6px;
+  border-radius: 6px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  border: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .grid-3,
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+input {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+/* Insights Cards */
+.insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.insight-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 18px;
+  border-radius: 14px;
+  transition: 0.3s;
+}
+
+.insight-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Highlight */
+.highlight {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* Small text */
+.muted {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Insight colors */
+.green { color: #22c55e; }
+.blue { color: #3b82f6; }
+.orange { color: #f97316; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .insight-grid {
+    grid-template-columns: 1fr;
+  }
+}
