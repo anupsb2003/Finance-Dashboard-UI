@@ -9,6 +9,10 @@ export default function TransactionTable() {
     filter,
     setSearch,
     setFilter,
+    dateFrom,
+    dateTo,
+    setDateFrom,
+    setDateTo,
   } = useStore();
 
   // 🔥 FILTER LOGIC
@@ -20,7 +24,11 @@ export default function TransactionTable() {
     const matchFilter =
       filter === "all" || t.type === filter;
 
-    return matchSearch && matchFilter;
+    const txDate = new Date(t.date);
+    const matchFrom = dateFrom ? txDate >= new Date(dateFrom) : true;
+    const matchTo = dateTo ? txDate <= new Date(dateTo) : true;
+
+    return matchSearch && matchFilter && matchFrom && matchTo;
   });
 
   return (
@@ -41,6 +49,8 @@ export default function TransactionTable() {
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
+        <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+        <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
       </div>
 
       {/* ❗ EMPTY STATE */}

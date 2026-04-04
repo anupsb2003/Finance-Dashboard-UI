@@ -36,9 +36,8 @@ body {
 
 /* Container */
 .container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
+  width: 100%;
+  padding: 20px ;
 }
 
 /* Navbar */
@@ -218,4 +217,9 @@ input {
   .insight-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.active-filter {
+  background: #22c55e;
+  color: white;
 }
