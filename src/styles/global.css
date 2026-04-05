@@ -36,7 +36,6 @@ body {
 
 /* Container */
 .container {
-  width: 100%;
   padding: 20px ;
 }
 
@@ -84,16 +83,27 @@ body {
 .table {
   width: 100%;
   margin-top: 10px;
+  border-collapse: collapse;
 }
 
-.table th {
-  text-align: left;
-  padding-bottom: 10px;
-}
-
+.table th,
 .table td {
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
+  padding: 12px 10px;
+  text-align: left;
+}
+
+/* ACTION BUTTONS */
+.action-cell {
+  display: flex;
+  gap: 8px;
+}
+
+/* EDIT BUTTON */
+.edit-btn {
+  background: #3b82f6;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
 }
 
 /* Colors */
@@ -135,10 +145,11 @@ select {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.6);
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
 
 .modal {
@@ -147,8 +158,19 @@ select {
   border-radius: 12px;
   width: 300px;
   border: 1px solid var(--border);
+  animation: fadeIn 0.3s ease;
 }
-
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 /* Responsive */
 @media (max-width: 900px) {
   .grid-3,
@@ -222,4 +244,279 @@ input {
 .active-filter {
   background: #22c55e;
   color: white;
+}
+/* ========================= */
+/* SIDEBAR PREMIUM STYLE */
+/* ========================= */
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: var(--sidebar);
+  color: var(--text);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--border);
+}
+
+/* Logo */
+.logo-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 18px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 20px 0 10px;
+}
+
+/* Nav Items */
+.nav-item {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition: 0.3s;
+}
+
+/* Hover */
+.nav-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* ACTIVE (IMPORTANT 🔥) */
+.nav-item.active {
+  background: linear-gradient(90deg, #9333ea, #a855f7);
+  color: white;
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+}
+
+/* Bottom Section */
+.bottom-section {
+  margin-top: auto;
+}
+
+/* Role Card */
+.role-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* Dark mode text */
+.dark-mode {
+  color: #94a3b8;
+  font-size: 14px;
+}
+/* Icon Styling */
+.icon {
+  margin-right: 10px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* Align nav items properly */
+.nav-item {
+  display: flex;
+  align-items: center;
+}
+/* Layout fix */
+.app {
+  display: flex;
+}
+
+/* Sidebar stays left */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  flex-shrink: 0;
+}
+
+/* Content goes right */
+.main {
+  flex: 1;
+  padding: 20px;
+}
+
+.main {
+  margin-left: 250px;   /* 🔥 pushes content right */
+  padding: 20px;
+
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.category-list {
+  margin-top: 20px;
+}
+
+.category-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 120px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* LEFT */
+.category-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rank {
+  color: #64748b;
+  width: 15px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.name {
+  color: #e2e8f0;
+}
+
+/* BAR */
+.category-bar {
+  height: 6px;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: 0.4s ease;
+}
+
+/* RIGHT */
+.category-right {
+  display: flex;
+  justify-content: space-between;
+  color: #cbd5f5;
+}
+
+.percent {
+  color: #64748b;
+  margin-left: 10px;
+}
+/* Add button */
+.add-btn {
+  margin-top: 10px;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* Theme toggle */
+.theme-toggle {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+/* Switch */
+.switch {
+  width: 40px;
+  height: 20px;
+  border-radius: 20px;
+  background: #1e293b;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+CSS
+
+.switch.light {
+  background: #cbd5f5; 
+}
+
+.switch.dark {
+  background: #22c55e;
+}
+
+/* Circle */
+.circle {
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+.switch.dark .circle {
+  transform: translateX(20px);
+}
+
+/* MODAL UPGRADE */
+.modern-modal {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Inputs */
+.modern-modal input,
+.modern-modal select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Actions */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Buttons */
+.add-btn {
+  flex: 1;
+  background: #22c55e;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #ef4444;
 }

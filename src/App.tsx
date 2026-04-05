@@ -1,44 +1,32 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import Sidebar from "./layout/Sidebar";
+import Header from "./layout/Header";
 import Dashboard from "./pages/Dashboard";
 import Insights from "./pages/Insights";
-
+import Transactions from "./pages/Transactions";
 export default function App() {
   const [page, setPage] = useState("dashboard");
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
-  // Apply theme to HTML
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
   return (
-    <>
-      {/* Navbar */}
-      <div className="navbar">
-        {/* Left side (Navigation) */}
-        <div style={{ display: "flex", gap: "15px" }}>
-          <button onClick={() => setPage("dashboard")}>
-            Dashboard
-          </button>
+    <div className="app"> {/* 🔥 IMPORTANT */}
+      <Sidebar 
+  setPage={setPage} 
+  theme={theme} 
+  setTheme={setTheme} 
+/>
 
-          <button onClick={() => setPage("insights")}>
-            Insights
-          </button>
-        </div>
+      <div className="main"> {/* 🔥 CONTENT ON RIGHT */}
+        <Header theme={theme} setTheme={setTheme} />
 
-        {/* Right side (Theme Toggle) */}
-        <button
-          onClick={() =>
-            setTheme(theme === "light" ? "dark" : "light")
-          }
-        >
-          {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-        </button>
+        {page === "dashboard" && <Dashboard />}
+        {page === "transactions" && <Transactions />}
+        {page === "insights" && <Insights />}
       </div>
-
-      {/* Pages */}
-      {page === "dashboard" && <Dashboard />}
-      {page === "insights" && <Insights />}
-    </>
+    </div>
   );
 }

@@ -1,10 +1,12 @@
 import { useStore } from "../store/useStore";
+import { useState } from "react";
 
 export default function TransactionTable() {
   const {
     transactions,
     role,
     deleteTransaction,
+    updateTransaction,
     search,
     filter,
     setSearch,
@@ -13,7 +15,12 @@ export default function TransactionTable() {
     dateTo,
     setDateFrom,
     setDateTo,
+    category,
+    setCategory,
   } = useStore();
+
+  // ✅ MUST be inside component
+  const [editData, setEditData] = useState<any>(null);
 
   // 🔥 FILTER LOGIC
   const filteredData = transactions.filter((t) => {
@@ -21,27 +28,34 @@ export default function TransactionTable() {
       .toLowerCase()
       .includes(search.toLowerCase());
 
-    const matchFilter =
-      filter === "all" || t.type === filter;
+    const matchFilter = filter === "all" || t.type === filter;
+
+    const matchCategory =
+      category === "all" || t.category === category;
 
     const txDate = new Date(t.date);
     const matchFrom = dateFrom ? txDate >= new Date(dateFrom) : true;
     const matchTo = dateTo ? txDate <= new Date(dateTo) : true;
 
-    return matchSearch && matchFilter && matchFrom && matchTo;
+    return (
+      matchSearch &&
+      matchFilter &&
+      matchCategory &&
+      matchFrom &&
+      matchTo
+    );
   });
 
   return (
     <div className="card">
       <h3>Transactions</h3>
 
-      {/* 🔍 SEARCH + FILTER */}
-      <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+      {/* 🔍 FILTERS */}
+      <div style={{ display: "flex", gap: "10px", marginBottom: "10px", flexWrap: "wrap" }}>
         <input
           placeholder="Search category..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{ padding: "6px" }}
         />
 
         <select value={filter} onChange={(e) => setFilter(e.target.value as any)}>
@@ -49,11 +63,22 @@ export default function TransactionTable() {
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
+
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="all">All Categories</option>
+          <option value="Salary">Salary</option>
+          <option value="Food">Food</option>
+          <option value="Shopping">Shopping</option>
+          <option value="Transport">Transport</option>
+          <option value="Rent">Rent</option>
+          <option value="Freelance">Freelance</option>
+        </select>
+
         <input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
         <input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
       </div>
 
-      {/* ❗ EMPTY STATE */}
+      {/* ❗ EMPTY */}
       {filteredData.length === 0 ? (
         <p>No transactions found</p>
       ) : (
@@ -64,7 +89,7 @@ export default function TransactionTable() {
               <th>Amount</th>
               <th>Category</th>
               <th>Type</th>
-              {role === "admin" && <th>Action</th>}
+              {role === "admin" && <th>Actions</th>}
             </tr>
           </thead>
 
@@ -80,7 +105,14 @@ export default function TransactionTable() {
                 </td>
 
                 {role === "admin" && (
-                  <td>
+                  <td className="action-cell">
+                    <button
+                      className="edit-btn"
+                      onClick={() => setEditData(t)}
+                    >
+                      Edit
+                    </button>
+
                     <button
                       className="delete-btn"
                       onClick={() => {
@@ -97,6 +129,82 @@ export default function TransactionTable() {
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* 🧾 EDIT MODAL */}
+      {editData && (
+        <div className="modal-overlay">
+          <div className="modal modern-modal">
+            <h2>Edit Transaction</h2>
+
+            {/* DATE */}
+            <input
+              type="date"
+              value={editData.date}
+              onChange={(e) =>
+                setEditData({ ...editData, date: e.target.value })
+              }
+            />
+
+            {/* AMOUNT */}
+            <input
+              type="number"
+              value={editData.amount}
+              onChange={(e) =>
+                setEditData({
+                  ...editData,
+                  amount: Number(e.target.value),
+                })
+              }
+            />
+
+            {/* CATEGORY (DROPDOWN like Add) */}
+            <select
+              value={editData.category}
+              onChange={(e) =>
+                setEditData({ ...editData, category: e.target.value })
+              }
+            >
+              <option>Salary</option>
+              <option>Food</option>
+              <option>Shopping</option>
+              <option>Transport</option>
+              <option>Rent</option>
+              <option>Freelance</option>
+            </select>
+
+            {/* TYPE */}
+            <select
+              value={editData.type}
+              onChange={(e) =>
+                setEditData({ ...editData, type: e.target.value })
+              }
+            >
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+
+            {/* ACTIONS */}
+            <div className="modal-actions">
+              <button
+                className="add-btn"
+                onClick={() => {
+                  updateTransaction(editData);
+                  setEditData(null);
+                }}
+              >
+                Update
+              </button>
+
+              <button
+                className="cancel-btn"
+                onClick={() => setEditData(null)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

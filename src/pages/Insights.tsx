@@ -1,68 +1,145 @@
 import { useStore } from "../store/useStore";
-
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import CategoryBreakdown from "../components/CategoryBreakdown";
 export default function Insights() {
   const { transactions } = useStore();
 
-  const expenses = transactions.filter(t => t.type === "expense");
+  // 🔥 CATEGORY SPENDING
+  const categoryMap: any = {};
+  transactions
+    .filter((t) => t.type === "expense")
+    .forEach((t) => {
+      categoryMap[t.category] =
+        (categoryMap[t.category] || 0) + t.amount;
+    });
 
-  // Category grouping
-  const grouped: any = {};
-  expenses.forEach(t => {
-    grouped[t.category] = (grouped[t.category] || 0) + t.amount;
+  const categoryData = Object.entries(categoryMap)
+    .map(([category, amount]) => ({
+      category,
+      amount: amount as number,
+    }))
+    .sort((a, b) => b.amount - a.amount);
+
+  const topCategory = categoryData[0];
+
+  // 🔥 INCOME & EXPENSE TOTAL
+  const income = transactions
+    .filter((t) => t.type === "income")
+    .reduce((a, b) => a + b.amount, 0);
+
+  const expense = transactions
+    .filter((t) => t.type === "expense")
+    .reduce((a, b) => a + b.amount, 0);
+
+  const savingsRate = ((income - expense) / income) * 100;
+
+  // 🔥 MONTHLY COMPARISON (March vs April)
+  const getMonthData = (month: number) => {
+    const data = transactions.filter(
+      (t) => new Date(t.date).getMonth() === month
+    );
+
+    return {
+      income: data
+        .filter((t) => t.type === "income")
+        .reduce((a, b) => a + b.amount, 0),
+      expense: data
+        .filter((t) => t.type === "expense")
+        .reduce((a, b) => a + b.amount, 0),
+    };
+  };
+
+  const march = getMonthData(2);
+  const april = getMonthData(3);
+
+  const comparisonData = [
+    {
+      name: "Income",
+      March: march.income,
+      April: april.income,
+    },
+    {
+      name: "Expense",
+      March: march.expense,
+      April: april.expense,
+    },
+  ];
+
+  // 🔥 MOST ACTIVE MONTH
+  const monthMap: any = {};
+  transactions.forEach((t) => {
+    const m = new Date(t.date).toLocaleString("default", {
+      month: "short",
+      year: "numeric",
+    });
+    monthMap[m] = (monthMap[m] || 0) + t.amount;
   });
 
-  const highest = Object.entries(grouped).sort(
+  const mostActive = Object.entries(monthMap).sort(
     (a: any, b: any) => b[1] - a[1]
   )[0];
 
-  const totalExpense = expenses.reduce((a, b) => a + b.amount, 0);
-  const avgExpense = totalExpense / (expenses.length || 1);
-
   return (
     <div className="container">
-      <h2>📊 Insights Dashboard</h2>
+      <h2>Insights</h2>
 
-      {transactions.length === 0 ? (
-        <p>No data available</p>
-      ) : (
-        <div className="insight-grid">
-
-          {/* Highest Category */}
-          <div className="insight-card">
-            <p className="muted">Highest Spending</p>
-            <p className="highlight green">
-              {highest?.[0] || "N/A"}
-            </p>
-          </div>
-
-          {/* Average Expense */}
-          <div className="insight-card">
-            <p className="muted">Average Expense</p>
-            <p className="highlight blue">
-              ₹{avgExpense.toFixed(0)}
-            </p>
-          </div>
-
-          {/* Total Expense */}
-          <div className="insight-card">
-            <p className="muted">Total Expense</p>
-            <p className="highlight orange">
-              ₹{totalExpense}
-            </p>
-          </div>
-
-          {/* Smart Insight */}
-          <div className="insight-card" style={{ gridColumn: "span 3" }}>
-            <p className="muted">💡 Insight</p>
-            <p style={{ marginTop: "10px" }}>
-              You are spending most of your money on{" "}
-              <b>{highest?.[0]}</b>. Consider optimizing this category to
-              improve savings.
-            </p>
-          </div>
-
+      {/* 🔥 TOP CARDS */}
+      <div className="insight-grid">
+        <div className="insight-card">
+          <p className="muted">TOP SPENDING CATEGORY</p>
+          <h3>{topCategory?.category}</h3>
+          <p>₹{topCategory?.amount}</p>
         </div>
-      )}
+
+        <div className="insight-card">
+          <p className="muted">SAVINGS RATE</p>
+          <h3>{savingsRate.toFixed(0)}%</h3>
+        </div>
+
+        <div className="insight-card">
+          <p className="muted">NET SAVINGS</p>
+          <h3>₹{income - expense}</h3>
+        </div>
+
+        <div className="insight-card">
+          <p className="muted">MOST ACTIVE MONTH</p>
+          <h3>{mostActive?.[0]}</h3>
+        </div>
+
+        <div className="insight-card">
+          <p className="muted">AVG MONTHLY INCOME</p>
+          <h3>₹{(income / 12).toFixed(0)}</h3>
+        </div>
+      </div>
+
+      {/* 🔥 MONTHLY COMPARISON */}
+      <div className="card" style={{ marginTop: "20px" }}>
+        <h3>Monthly Comparison</h3>
+
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={comparisonData}>
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+
+            <Bar dataKey="March" fill="#6366f1" />
+            <Bar dataKey="April" fill="#a855f7" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* 🔥 CATEGORY BREAKDOWN */}
+      
+      <CategoryBreakdown />
     </div>
   );
 }
