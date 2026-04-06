@@ -11,12 +11,9 @@ import { FaCrown } from "react-icons/fa";
 import { BsLightningFill } from "react-icons/bs";
 import { useStore } from "../store/useStore";
 import RoleSwitcher from "../components/RoleSwitcher";
-import AddTransaction from "../components/AddTransaction";
 
-export default function Sidebar({ setPage, theme, setTheme }: any) {
+export default function Sidebar({ setPage, theme, setTheme, openModal }: any) {
   const { role } = useStore();
-
-  const [showModal, setShowModal] = useState(false);
   const [active, setActive] = useState("dashboard");
 
   const handleClick = (page: string) => {
@@ -26,6 +23,7 @@ export default function Sidebar({ setPage, theme, setTheme }: any) {
 
   return (
     <div className="sidebar">
+      
       {/* 🔥 LOGO */}
       <div className="logo-box">
         <div className="logo-icon">
@@ -65,11 +63,11 @@ export default function Sidebar({ setPage, theme, setTheme }: any) {
           Insights
         </button>
 
-        {/* 🔥 ADD BUTTON (ADMIN ONLY) */}
+        {/* 🔥 ADD BUTTON */}
         {role === "admin" && (
           <button
             className="nav-item add-btn"
-            onClick={() => setShowModal(true)}
+            onClick={openModal} // ✅ FIX HERE
           >
             <FiPlus className="icon" />
             Add Transaction
@@ -77,7 +75,7 @@ export default function Sidebar({ setPage, theme, setTheme }: any) {
         )}
       </div>
 
-      {/* 🔥 BOTTOM SECTION */}
+      {/* 🔥 BOTTOM */}
       <div className="bottom-section">
         <p className="section-title">ROLE</p>
 
@@ -86,14 +84,10 @@ export default function Sidebar({ setPage, theme, setTheme }: any) {
           <RoleSwitcher />
         </div>
 
-        {/* 🔥 THEME TOGGLE */}
+        {/* 🔥 THEME */}
         <div className="theme-toggle">
           <div className="theme-left">
-            {theme === "dark" ? (
-              <FiMoon className="icon" />
-            ) : (
-              <FiSun className="icon" />
-            )}
+            {theme === "dark" ? <FiMoon /> : <FiSun />}
             <span>{theme === "dark" ? "Dark Mode" : "Light Mode"}</span>
           </div>
 
@@ -107,11 +101,6 @@ export default function Sidebar({ setPage, theme, setTheme }: any) {
           </div>
         </div>
       </div>
-
-      {/* 🔥 MODAL */}
-      {showModal && (
-        <AddTransaction onClose={() => setShowModal(false)} />
-      )}
     </div>
   );
 }
