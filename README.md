@@ -75,21 +75,16 @@ src/
 ## 📸 Screenshots
 
 ### 🏠 Dashboard
-
-![Dashboard](./assets/dashboard.png)
+![Dashboard](public/assets/dashboard.png)
 
 ### 💳 Transactions
-
-![Transactions](./assets/transactions.png)
+![Transactions](public/assets/transactions.png)
 
 ### 📊 Insights
-
-![Insights](./assets/insights.png)
+![Insights](public/assets/insights.png)
 
 ### ➕ Add Transaction
-
-![Add Transaction](./assets/add-transaction.png)
-
+![Add Transaction](public/assets/add-transaction.png)
 ---
 
 ## ⚙️ Installation
